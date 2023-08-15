@@ -38,6 +38,46 @@ public class ExampleResource {
         }
     }
 
+    @POST
+    @Path("/delete")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteContainer(EnvironmentDescription environmentDescription) {
+        try {
+            return Response.ok(dockerService.deleteContainer(environmentDescription)).build();
+        }
+        catch (Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
+
+    @POST
+    @Path("/stop")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response stopContainer(EnvironmentDescription environmentDescription) {
+        try {
+            return Response.ok(dockerService.stopContainer(environmentDescription)).build();
+        }
+        catch (Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
+    @POST
+    @Path("/start")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response startContainer(EnvironmentDescription environmentDescription) {
+        try {
+            return Response.ok(dockerService.startContainer(environmentDescription)).build();
+        }
+        catch (Exception e){
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+    }
+
 
     @GET
     @Path("/config")

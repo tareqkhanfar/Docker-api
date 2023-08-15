@@ -2,7 +2,6 @@ package com.khanfar.Service;
 
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.github.dockerjava.api.command.CreateNetworkResponse;
 import com.github.dockerjava.api.model.*;
 import com.github.dockerjava.core.DockerClientConfig;
 import com.github.dockerjava.core.DefaultDockerClientConfig;
@@ -81,9 +80,10 @@ public class DockerService {
 
         CreateContainerResponse dbContainer = dockerClient.createContainerCmd(myConfiguration.getDatabaseImageName())
                 .withName(environmentDescription.getClientName() + myConfiguration.getDatabasePrefix())
-                .withEnv("MYSQL_DATABASE="+myConfiguration.getDatabaseName(), "MYSQL_ROOT_PASSWORD="+myConfiguration.getDatabasePassword())
-               // .withPortBindings(portBindings)
-                .withBinds(volumeBind1 , volumeBind2 ).withMemory(512 * 1000 * 1000l)
+              //  .withEnv("MYSQL_DATABASE="+myConfiguration.getDatabaseName(), "MYSQL_ROOT_PASSWORD="+myConfiguration.getDatabasePassword())
+                 .withEnv("ORACLE_SID="+myConfiguration.getDatabaseName(), "ORACLE_PWD="+myConfiguration.getDatabasePassword() ,"ORACLE_PDB=ORCLPDB1")
+                // .withPortBindings(portBindings)
+               // .withBinds(volumeBind1 , volumeBind2 ).withMemory(512 * 1000 * 1000l)
                 .withExposedPorts(new ExposedPort(myConfiguration.getDatabaseExposedPort()))
                 .exec();
 
@@ -115,4 +115,24 @@ public class DockerService {
 
 
     }
+
+    public boolean stopContainer(EnvironmentDescription environmentDescription) {
+
+        dockerClient.stopContainerCmd(environmentDescription.getContainerName()).exec();
+        return true ;
+
+    }
+
+    public boolean startContainer(EnvironmentDescription environmentDescription) {
+        dockerClient.startContainerCmd(environmentDescription.getContainerName()).exec();
+        return true;
+    }
+
+    public boolean deleteContainer(EnvironmentDescription environmentDescription) {
+        dockerClient.removeContainerCmd(environmentDescription.getContainerName()).exec();
+        dockerClient.removeVolumeCmd(environmentDescription.getContainerName()+myConfiguration.getVolumePrefix()).exec();
+        dockerClient.removeNetworkCmd(environmentDescription.getContainerName()+myConfiguration.getNetworkPrefix()).exec();
+        return true ;
+    }
+
 }
