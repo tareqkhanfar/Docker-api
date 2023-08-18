@@ -30,7 +30,7 @@ public class ExampleResource {
         System.out.println(123);
         try {
             dockerService.createClientEnvironment(environmentDescription);
-            return Response.ok("<h1>Environment created IS DONE  for client: " + environmentDescription.getClientName() +"</h1> \n <h1> IP Address : localhost:"+DockerService.lastPort+"</h1>").build();
+            return Response.ok("<h1>Environment created IS DONE  for client: " + environmentDescription.getClientName() +"</h1> \n <h1> IP Address : http://49.13.66.183/:"+DockerService.lastPort+"</h1>").build();
         } catch (Exception e) {
              e.printStackTrace();
 
@@ -50,6 +50,45 @@ public class ExampleResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
     }
+
+    @GET
+    @Path("/container/{containerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+public Response getContainerByName(@PathParam("containerName") String containerName) {
+        return Response.ok(dockerService.getContainerByName(containerName)).build();
+    }
+
+    @GET
+    @Path("/container")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllContainers() {
+        return Response.ok(dockerService.getAllContainers()).build();
+    }
+    @GET
+    @Path("/volume")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllVolumes() {
+        return Response.ok(dockerService.getAllVolumes()).build();
+    }
+    @GET
+    @Path("/network")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllNetworks() {
+        return Response.ok(dockerService.getAllNetworks()).build();
+    }
+    @GET
+    @Path("/container/status/{containerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getStatus(@PathParam("containerName") String containerName) {
+        return Response.ok(dockerService.getStatus(containerName)).build();
+    }
+    @GET
+    @Path("/container/state/{containerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getState(@PathParam("containerName") String containerName) {
+        return Response.ok(dockerService.getState(containerName)).build();
+    }
+
 
 
     @POST

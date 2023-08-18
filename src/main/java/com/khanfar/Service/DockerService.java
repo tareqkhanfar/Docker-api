@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.List;
 
 
 @ApplicationScoped
@@ -27,9 +28,10 @@ public class DockerService {
 
     DockerClientConfig dockerClientConfig = DefaultDockerClientConfig.createDefaultConfigBuilder().build();
     DockerClient dockerClient;
-    public static int lastPort = 3999;
+    public static int lastPort ;
 
     public DockerService() {
+
         ApacheDockerHttpClient httpClient = new ApacheDockerHttpClient.Builder()
                 .dockerHost(dockerClientConfig.getDockerHost())
                 .sslConfig(dockerClientConfig.getSSLConfig())
@@ -43,6 +45,7 @@ public class DockerService {
     }
 
     public void createClientEnvironment(EnvironmentDescription environmentDescription) throws InterruptedException, IOException {
+        lastPort = myConfiguration.getLastPort();
 
         System.out.println("Database URL: " + myConfiguration.getDatabaseUrl());
         System.out.println("Database Name: " + myConfiguration.getDatabaseName());
@@ -70,6 +73,7 @@ public class DockerService {
         }
         dockerClient.createVolumeCmd().withName(environmentDescription.getClientName()+myConfiguration.getVolumePrefix()).exec();
 
+
         Bind volumeBind1 = new Bind(hostPath, new Volume(containerPath));
         Bind volumeBind2 = new Bind(environmentDescription.getClientName()+myConfiguration.getVolumePrefix(), new Volume(myConfiguration.getDatabasePath()));
 
@@ -83,7 +87,8 @@ public class DockerService {
               //  .withEnv("MYSQL_DATABASE="+myConfiguration.getDatabaseName(), "MYSQL_ROOT_PASSWORD="+myConfiguration.getDatabasePassword())
                  .withEnv("ORACLE_SID="+myConfiguration.getDatabaseName(), "ORACLE_PWD="+myConfiguration.getDatabasePassword() ,"ORACLE_PDB=ORCLPDB1")
                 // .withPortBindings(portBindings)
-               // .withBinds(volumeBind1 , volumeBind2 ).withMemory(512 * 1000 * 1000l)
+               .withBinds(volumeBind1 , volumeBind2 )
+                //.withMemory(512 * 1000 * 1000l)
                 .withExposedPorts(new ExposedPort(myConfiguration.getDatabaseExposedPort()))
                 .exec();
 
@@ -95,6 +100,8 @@ public class DockerService {
         dockerClient.startContainerCmd(dbContainer.getId()).exec();
 
         int currentPort = ++lastPort;
+
+        myConfiguration.setLastPort(lastPort);
 
         CreateContainerResponse serviceContainer = dockerClient.createContainerCmd(myConfiguration.getServiceImageName())
                 .withName(environmentDescription.getClientName() + myConfiguration.getServicePrefix())
@@ -135,4 +142,46 @@ public class DockerService {
         return true ;
     }
 
+    public Container getContainerByName(String containerName) {
+        List<Container> containerList = dockerClient.listContainersCmd().exec();
+        for (Container container : containerList) {
+            if (container.getId().equalsIgnoreCase(containerName)){
+                return container;
+            }
+        }
+        return null;
+    }
+
+    public Object getAllContainers() {
+        return     dockerClient.listContainersCmd().exec();
+
+    }
+
+    public Object getStatus(String containerName) {
+        List<Container> containerList = dockerClient.listContainersCmd().exec();
+        for (Container container : containerList) {
+            if (container.getId().equalsIgnoreCase(containerName)){
+                return container.getStatus();
+            }
+        }
+        return null;
+    }
+
+    public Object getState(String containerName) {
+        List<Container> containerList = dockerClient.listContainersCmd().exec();
+        for (Container container : containerList) {
+            if (container.getId().equalsIgnoreCase(containerName)){
+                return container.getState();
+            }
+        }
+        return null;
+    }
+
+    public Object getAllNetworks() {
+        return dockerClient.listNetworksCmd().exec();
+    }
+
+    public Object getAllVolumes() {
+        return dockerClient.listVolumesCmd().exec();
+    }
 }

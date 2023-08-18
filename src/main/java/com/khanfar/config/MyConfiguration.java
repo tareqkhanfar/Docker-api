@@ -14,6 +14,9 @@ public class MyConfiguration {
     @ConfigProperty(name = "dockerServer.database.url")
     String databaseUrl;
 
+    @ConfigProperty(name = "dockerServer.lastPort")
+    Integer lastPort;
+
     @ConfigProperty(name = "dockerServer.database.name")
     String databaseName;
 
@@ -57,6 +60,14 @@ public class MyConfiguration {
 
     @ConfigProperty(name = "dockerServer.service.port")
     Integer servicePort;
+
+    public Integer getLastPort() {
+        return lastPort;
+    }
+
+    public void setLastPort(Integer lastPort) {
+        this.lastPort = lastPort;
+    }
 
     public Integer getServicePort() {
         return servicePort;
