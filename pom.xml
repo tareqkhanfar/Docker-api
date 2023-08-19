@@ -36,10 +36,22 @@
 
 
     </dependencyManagement>
+
+
     <dependencies>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-hibernate-orm-panache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>19.8.0.0</version> <!-- Use the appropriate version -->
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -95,6 +107,12 @@
             <groupId>com.sun.mail</groupId>
             <artifactId>mailapi</artifactId>
             <version>1.6.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.26</version>
+            <scope>compile</scope>
         </dependency>
 
 
