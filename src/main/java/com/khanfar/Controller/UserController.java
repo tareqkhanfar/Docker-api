@@ -2,12 +2,13 @@ package com.khanfar.Controller;
 
 
 import com.khanfar.DTO.UserDTO;
-import com.khanfar.Entity.User;
 import com.khanfar.Service.UserService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Response;
 
 @Path("/registration")
@@ -40,5 +41,12 @@ public class UserController {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
 
+    }
+
+    @Transactional
+    @GET
+    @Path("/{username}")
+    public Response getAllContainers (@PathParam("username") String username) {
+        return Response.ok(userService.findContainerNameByUsername(username)).build();
     }
 }

@@ -3,11 +3,16 @@ package com.khanfar.Service;
 
 import com.khanfar.DTO.UserDTO;
 import com.khanfar.Entity.User;
+import com.khanfar.Entity.User_EnvEntity;
 import com.khanfar.Repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
+
+import java.util.List;
+import java.util.Set;
 
 
 @ApplicationScoped
@@ -35,6 +40,23 @@ public class UserService {
             throw new NotFoundException("user not found ");
         }
     }
+
+
+
+
+            @Transactional
+            public Set<User_EnvEntity> findContainerNameByUsername(String username) {
+
+
+                String jpql = "SELECT e.environment.containerName FROM User u " +
+                        "JOIN u.user_envEntities ue " +
+                        "JOIN ue.environment e " +
+                        "WHERE u.username = :username";
+
+     return null ;
+
+
+        }
 
 
 
