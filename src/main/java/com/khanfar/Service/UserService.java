@@ -2,6 +2,7 @@ package com.khanfar.Service;
 
 
 import com.khanfar.DTO.UserDTO;
+import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Entity.User;
 import com.khanfar.Entity.User_EnvEntity;
 import com.khanfar.Repository.UserRepository;
@@ -45,17 +46,10 @@ public class UserService {
 
 
             @Transactional
-            public Set<User_EnvEntity> findContainerNameByUsername(String username) {
-
-
-                String jpql = "SELECT e.environment.containerName FROM User u " +
-                        "JOIN u.user_envEntities ue " +
-                        "JOIN ue.environment e " +
-                        "WHERE u.username = :username";
-
-     return null ;
-
-
+            public List<EnvironmentDescription> findContainerNameByUsername(String username) {
+                System.out.println("user name : " + username);
+                System.out.println("LIST "+user.findContainerNameByUsername(username));
+                        return user.findContainerNameByUsername(username) ;
         }
 
 

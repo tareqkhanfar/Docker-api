@@ -2,12 +2,13 @@ package com.khanfar.DTO;
 
 import lombok.Data;
 
-import java.util.Set;
+import java.util.Date;
+
 
 @Data
 public class User_EnvDTO {
-    private String user_name ;
-    private Set<EnvironmentDTO> environmentDTOS ;
-
+    private Long user_id ;
+    private Long env_id ;
+    private Date date ;
 
 }

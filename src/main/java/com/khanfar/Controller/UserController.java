@@ -47,6 +47,7 @@ public class UserController {
     @GET
     @Path("/{username}")
     public Response getAllContainers (@PathParam("username") String username) {
+
         return Response.ok(userService.findContainerNameByUsername(username)).build();
     }
 }
