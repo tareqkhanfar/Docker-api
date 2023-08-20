@@ -1,6 +1,8 @@
 package com.khanfar;
 
+import com.khanfar.DTO.ClientEnvironmentDTO;
 import com.khanfar.DTO.EnvironmentDTO;
+import com.khanfar.DTO.UserDTO;
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Service.DockerService;
 import com.khanfar.config.MyConfiguration;
@@ -26,11 +28,13 @@ public class ExampleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/create")
-    public Response createClientEnvironment(EnvironmentDTO environmentDescription) {
+    public Response createClientEnvironment(ClientEnvironmentDTO clientEnvironmentDTO) {
 
         try {
-            dockerService.createClientEnvironment(environmentDescription);
-            return Response.ok("<h1>Environment created IS DONE  for client: " + environmentDescription.getLabelName() +"</h1> \n <h1> IP Address : http://49.13.66.183/:"+DockerService.lastPort+"</h1>").build();
+            System.out.println(clientEnvironmentDTO.getEnvironmentDTO());
+            System.out.println(clientEnvironmentDTO.getUserDTO());
+            dockerService.createClientEnvironment(clientEnvironmentDTO.getUserDTO(), clientEnvironmentDTO.getEnvironmentDTO());
+            return Response.ok("<h1>Environment created IS DONE  for client: " + clientEnvironmentDTO.getEnvironmentDTO().getLabelName() +"</h1> \n <h1> IP Address : http://49.13.66.183/:"+DockerService.lastPort+"</h1>").build();
         } catch (Exception e) {
              e.printStackTrace();
 
@@ -142,5 +146,6 @@ public Response getContainerByName(@PathParam("containerName") String containerN
 
         return Response.ok(configJson).build();
     }
+
 
 }

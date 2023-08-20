@@ -4,7 +4,7 @@ package com.khanfar.Service;
 import com.khanfar.DTO.UserDTO;
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Entity.User;
-import com.khanfar.Controller.Repository.UserRepository;
+import com.khanfar.Repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

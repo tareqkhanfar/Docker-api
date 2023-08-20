@@ -2,7 +2,7 @@ package com.khanfar.Service;
 
 import com.khanfar.DTO.EnvironmentDTO;
 import com.khanfar.Entity.EnvironmentDescription;
-import com.khanfar.Controller.Repository.EnvironmentRepository;
+import com.khanfar.Repository.EnvironmentRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

@@ -8,12 +8,17 @@ import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientImpl;
 import com.github.dockerjava.httpclient5.ApacheDockerHttpClient;
 import com.khanfar.DTO.EnvironmentDTO;
+import com.khanfar.DTO.UserDTO;
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.config.MyConfiguration;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,7 +59,7 @@ public class DockerService {
         dockerClient = DockerClientImpl.getInstance(dockerClientConfig, httpClient);
     }
 
-    public void createClientEnvironment(EnvironmentDTO environmentDescription) throws InterruptedException, IOException {
+    public void createClientEnvironment(UserDTO userDTO, EnvironmentDTO environmentDescription) throws InterruptedException, IOException {
         lastPort = myConfiguration.getLastPort();
 
         System.out.println("Database URL: " + myConfiguration.getDatabaseUrl());
@@ -139,7 +144,7 @@ public class DockerService {
                 .withNetworkId(environmentDescription.getLabelName()+myConfiguration.getNetworkPrefix())
                 .exec();
 
-        scheduledExecutorService.schedule(() -> sendNotificationAfterSetUp(environmentDescription), 15, TimeUnit.MINUTES);
+        scheduledExecutorService.schedule(() -> sendNotificationAfterSetUp(userDTO ,environmentDescription), 15, TimeUnit.SECONDS);
 
 
     }
@@ -206,17 +211,38 @@ public class DockerService {
         return dockerClient.listVolumesCmd().exec();
     }
 
-    private void sendNotificationAfterSetUp( EnvironmentDTO environmentDescription) {
+    private void sendNotificationAfterSetUp( UserDTO userDTO,  EnvironmentDTO environmentDescription) {
         executorService.submit(() -> {
-
+            try {
+                notifyContainerEvent(userDTO  , "Hello , your environment : "+environmentDescription.getLabelName()+"cretaed its done ") ;
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
 
-    public void notifyContainerEvent(EnvironmentDescription environmentDescription) {
-        String apiUrl ="77http://hotsms.ps/sendbulksms.php?user_name=RamaLogisic&user_pass=test&sender=SMS&mobile=97259000000&type=0&text=Welcome . your envirment "+environmentDescription.getLabelName()+"its created and its done ";
-        notificationService.sendNotification(apiUrl);
+    public void notifyContainerEvent(UserDTO userDTO  , String message) throws URISyntaxException {
+        String userName = "RamaLogisic";
+        String userPass = "6412341";
+        String sender = "Rama Log.";
+        String mobile = userDTO.getPhoneNumber();
+        String type = "0";
+        String text = message;
 
-        // ... Rest of the method ...
+        String encodedSender = URLEncoder.encode(sender, StandardCharsets.UTF_8);
+        String encodedText = URLEncoder.encode(text, StandardCharsets.UTF_8);
+
+        String baseUrl = "http://hotsms.ps/sendbulksms.php";
+        String query = String.format(
+                "user_name=%s&user_pass=%s&sender=%s&mobile=%s&type=%s&text=%s",
+                userName, userPass, encodedSender, mobile, type, encodedText
+        );
+        String fullUrl = baseUrl + "?" + query;
+
+        URI uri = new URI(fullUrl);
+
+
+        notificationService.sendNotification(uri.toString());
     }
 
     public void shutdown() {

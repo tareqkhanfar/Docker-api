@@ -1,8 +1,7 @@
-package com.khanfar.Controller.Repository;
+package com.khanfar.Repository;
 
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Entity.User;
-import com.khanfar.Entity.User_EnvEntity;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
@@ -10,7 +9,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 
 @ApplicationScoped

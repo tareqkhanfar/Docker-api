@@ -5,7 +5,7 @@ import com.khanfar.DTO.User_EnvDTO;
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Entity.User;
 import com.khanfar.Entity.User_EnvEntity;
-import com.khanfar.Controller.Repository.ReservationRepository;
+import com.khanfar.Repository.ReservationRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
