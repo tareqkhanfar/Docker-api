@@ -2,12 +2,10 @@ package com.khanfar.Service;
 
 import com.khanfar.DTO.EnvironmentDTO;
 import com.khanfar.Entity.EnvironmentDescription;
-import com.khanfar.Entity.User_EnvEntity;
-import com.khanfar.Repository.EnvironmentRepository;
+import com.khanfar.Controller.Repository.EnvironmentRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import org.hibernate.cfg.Environment;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -55,13 +53,20 @@ public class EnvironmentService {
     private EnvironmentDTO convertToDTO(EnvironmentDescription fetchEnvironmentByName) {
 
         EnvironmentDTO environmentDTO = new EnvironmentDTO() ;
-        environmentDTO.setContainerName(fetchEnvironmentByName.getContainerName());
+        environmentDTO.setLabelName(fetchEnvironmentByName.getLabelName());
+        environmentDTO.setEnvID(fetchEnvironmentByName.getEnvID());
+        environmentDTO.setCpuCore(fetchEnvironmentByName.getCpu_core());
+        environmentDTO.setMemorySize(fetchEnvironmentByName.getMemory_size());
         return environmentDTO ;
     }
+
     private EnvironmentDescription convertToEntity(EnvironmentDTO environmentDTO) {
 
         EnvironmentDescription description = new EnvironmentDescription() ;
-        description.setContainerName(environmentDTO.getContainerName());
+        description.setLabelName(environmentDTO.getLabelName());
+        description.setEnvID(environmentDTO.getEnvID());
+        description.setCpu_core(environmentDTO.getCpuCore());
+        description.setMemory_size(environmentDTO.getMemorySize());
         return description ;
     }
 }

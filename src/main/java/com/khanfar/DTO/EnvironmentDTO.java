@@ -7,8 +7,9 @@ import lombok.Data;
 public class EnvironmentDTO {
 
 
-    private String containerName ;
-
-
+    private String envID ;
+    private String labelName;
+    private Long cpuCore ;
+    private Long memorySize ;
 
 }

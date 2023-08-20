@@ -29,7 +29,12 @@ public class EnvController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response fetchEnvironmentByName(String containerName) {
-        return Response.ok(environmentService.fetchEnvironmentByName(containerName)).build();
+        try {
+            return Response.ok(environmentService.fetchEnvironmentByName(containerName)).build();
+        }
+        catch (Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 
 
@@ -38,6 +43,11 @@ public class EnvController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Transactional
     public Response insert(EnvironmentDTO environmentDTO) {
-        return Response.ok(environmentService.insert(environmentDTO)).build();
+        try {
+            return Response.ok(environmentService.insert(environmentDTO)).build();
+        }
+        catch (Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 }

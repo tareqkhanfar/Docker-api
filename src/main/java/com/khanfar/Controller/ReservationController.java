@@ -24,6 +24,11 @@ public class ReservationController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response reserve(User_EnvDTO user_envDTO) {
-        return Response.ok(reservationService.newReserve(user_envDTO)).build();
+        try {
+            return Response.ok(reservationService.newReserve(user_envDTO)).build();
+        }
+        catch (Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 }

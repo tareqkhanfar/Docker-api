@@ -4,16 +4,13 @@ package com.khanfar.Service;
 import com.khanfar.DTO.UserDTO;
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Entity.User;
-import com.khanfar.Entity.User_EnvEntity;
-import com.khanfar.Repository.UserRepository;
+import com.khanfar.Controller.Repository.UserRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.NotFoundException;
 
 import java.util.List;
-import java.util.Set;
 
 
 @ApplicationScoped

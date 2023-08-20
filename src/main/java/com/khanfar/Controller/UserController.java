@@ -5,10 +5,8 @@ import com.khanfar.DTO.UserDTO;
 import com.khanfar.Service.UserService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/registration")
@@ -22,9 +20,12 @@ public class UserController {
     @POST
     @Path("/register")
     public Response register(UserDTO user) {
-
-        return Response.ok( userService.register(user)).build();
-
+       try {
+           return Response.ok(userService.register(user)).build();
+       }
+       catch (Exception e ) {
+           return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+       }
     }
 
     @Transactional
@@ -44,10 +45,16 @@ public class UserController {
     }
 
     @Transactional
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @GET
     @Path("/{username}")
     public Response getAllContainers (@PathParam("username") String username) {
-
-        return Response.ok(userService.findContainerNameByUsername(username)).build();
+        try {
+            return Response.ok(userService.findContainerNameByUsername(username)).build();
+        }
+        catch (Exception e ) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
     }
 }

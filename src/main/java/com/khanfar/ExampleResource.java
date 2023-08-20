@@ -1,5 +1,6 @@
 package com.khanfar;
 
+import com.khanfar.DTO.EnvironmentDTO;
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Service.DockerService;
 import com.khanfar.config.MyConfiguration;
@@ -25,12 +26,11 @@ public class ExampleResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/create")
-    public Response createClientEnvironment(EnvironmentDescription environmentDescription) {
+    public Response createClientEnvironment(EnvironmentDTO environmentDescription) {
 
-        System.out.println(123);
         try {
             dockerService.createClientEnvironment(environmentDescription);
-            return Response.ok("<h1>Environment created IS DONE  for client: " + environmentDescription.getClientName() +"</h1> \n <h1> IP Address : http://49.13.66.183/:"+DockerService.lastPort+"</h1>").build();
+            return Response.ok("<h1>Environment created IS DONE  for client: " + environmentDescription.getLabelName() +"</h1> \n <h1> IP Address : http://49.13.66.183/:"+DockerService.lastPort+"</h1>").build();
         } catch (Exception e) {
              e.printStackTrace();
 
@@ -42,7 +42,7 @@ public class ExampleResource {
     @Path("/delete")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteContainer(EnvironmentDescription environmentDescription) {
+    public Response deleteContainer(EnvironmentDTO environmentDescription) {
         try {
             return Response.ok(dockerService.deleteContainer(environmentDescription)).build();
         }
@@ -87,6 +87,7 @@ public Response getContainerByName(@PathParam("containerName") String containerN
     @Produces(MediaType.APPLICATION_JSON)
     public Response getState(@PathParam("containerName") String containerName) {
         return Response.ok(dockerService.getState(containerName)).build();
+
     }
 
 
@@ -95,7 +96,7 @@ public Response getContainerByName(@PathParam("containerName") String containerN
     @Path("/stop")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response stopContainer(EnvironmentDescription environmentDescription) {
+    public Response stopContainer(EnvironmentDTO environmentDescription) {
         try {
             return Response.ok(dockerService.stopContainer(environmentDescription)).build();
         }
@@ -108,7 +109,7 @@ public Response getContainerByName(@PathParam("containerName") String containerN
     @Path("/start")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response startContainer(EnvironmentDescription environmentDescription) {
+    public Response startContainer(EnvironmentDTO environmentDescription) {
         try {
             return Response.ok(dockerService.startContainer(environmentDescription)).build();
         }

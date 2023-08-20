@@ -1,4 +1,4 @@
-package com.khanfar.Repository;
+package com.khanfar.Controller.Repository;
 
 import com.khanfar.Entity.EnvironmentDescription;
 import com.khanfar.Entity.User;
@@ -35,9 +35,9 @@ public class UserRepository implements PanacheRepository<User> {
         System.out.println("from repository");
 
 
-        String sql = "SELECT e.containerName " +
+        String sql = "SELECT e.envID , e.labelname " +
                 "FROM ENVIRONMENT_TBL e " +
-                "JOIN user_env_TBL ue ON e.id = ue.env_id " +
+                "JOIN user_env_TBL ue ON e.envID = ue.env_id " +
                 "JOIN user_tbl u ON u.id = ue.user_id AND u.user_name = :username" ;
 
         return entityManager.createNativeQuery(sql).setParameter("username", username).getResultList();
