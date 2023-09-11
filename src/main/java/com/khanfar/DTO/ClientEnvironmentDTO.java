@@ -7,5 +7,4 @@ public class ClientEnvironmentDTO {
     private UserDTO userDTO;
     private EnvironmentDTO environmentDTO;
 
-    // Constructors, getters, and setters
 }
