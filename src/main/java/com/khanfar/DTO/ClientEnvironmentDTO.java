@@ -6,5 +6,4 @@ import lombok.Data;
 public class ClientEnvironmentDTO {
     private UserDTO userDTO;
     private EnvironmentDTO environmentDTO;
-
 }
